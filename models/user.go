@@ -12,3 +12,11 @@ type User struct {
 	StartDate   time.Time `json:"start_date"`
 	IsValid     bool      `json:"is_valid"`
 }
+
+type options struct {
+	
+}
+
+func New(options ...Options) *User{
+
+}
