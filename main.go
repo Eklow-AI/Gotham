@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Eklow-AI/Gotham/models"
+	"github.com/Eklow-AI/Gotham/handlers"
 	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -28,5 +29,6 @@ func main() {
 	models.ConnectDB()
 
 	router := gin.Default()
+	router.GET("/createUser", )
 	router.Run()
 }
