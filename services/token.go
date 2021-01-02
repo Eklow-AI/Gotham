@@ -24,6 +24,6 @@ func CreateToken(email string) (token string, err error) {
 	hashedEmail := hash(email)
 	uuidWithHyphen := uuid.New()
 	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
-	token = fmt.Sprintf("%d.%s", hashedEmail, uuid)
+	token = fmt.Sprintf("%d%s", hashedEmail, uuid)
 	return token, nil
 }
