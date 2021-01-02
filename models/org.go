@@ -15,8 +15,8 @@ type Org struct {
 	Utype               string `json:"utype"`
 	Clearance           int    `json:"clearance"`
 	Token               string `gorm:"primary_key"`
-	NumUsers            int
-	ActiveSubscriptions int
+	NumUsers            int    `gorm:"default:0"`
+	ActiveSubscriptions int    `gorm:"default:0"`
 	IsValid             bool
 }
 
@@ -35,17 +35,23 @@ func InsertNewOrg(options NewOrgOptions) (org *Org, err error) {
 		return &Org{}, errors.New(fmt.Sprintln("error inserting org:", err))
 	}
 	org = &Org{
-		Email:               options.Email,
-		Name:                options.Name,
-		Utype:               options.Utype,
-		Clearance:           options.Clearance,
-		Token:               token,
-		NumUsers:            0,
-		ActiveSubscriptions: 0,
+		Email:     options.Email,
+		Name:      options.Name,
+		Utype:     options.Utype,
+		Clearance: options.Clearance,
+		Token:     token,
+		IsValid:   true,
 	}
 	result := DB.Create(org)
 	if result.Error != nil {
 		return &Org{}, errors.New(fmt.Sprintln("error inserting org:", result.Error))
 	}
 	return org, nil
+}
+
+// GetOrg gets an org from the token (pk)
+func GetOrg(token string) *Org {
+	org := &Org{}
+	DB.Where("token = ?", token).First(org)
+	return org
 }

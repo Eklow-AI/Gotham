@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Eklow-AI/Gotham/handlers"
+	"github.com/Eklow-AI/Gotham/middleware"
 	"github.com/Eklow-AI/Gotham/models"
 	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
@@ -25,11 +26,17 @@ func main() {
 		log.Fatal("sentry.Init:", err)
 	}
 	defer sentry.Flush(2 * time.Second)
-
+	//Connect Postgres database
 	models.ConnectDB()
-
+	// Set up routing
 	router := gin.Default()
-	router.POST("/createUser", handlers.CreateUser())
-	router.POST("/createOrg", handlers.CreateOrg())
+	admin := router.Group("/admin", middleware.RequireAdmin())
+	{
+		admin.POST("/createOrg", handlers.CreateOrg())
+	}
+	private := router.Group("/private", middleware.CheckToken())
+	{
+		private.POST("/createUser", handlers.CreateUser())
+	}
 	router.Run()
 }
