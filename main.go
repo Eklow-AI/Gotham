@@ -28,15 +28,20 @@ func main() {
 	defer sentry.Flush(2 * time.Second)
 	//Connect Postgres database
 	models.ConnectDB()
+
 	// Set up routing
 	router := gin.Default()
+	// Admin routes that control the Gotham API
 	admin := router.Group("/admin", middleware.RequireAdmin())
 	{
 		admin.POST("/createOrg", handlers.CreateOrg())
 	}
+
+	// Private routes that only authorized Gotham projects can access
 	private := router.Group("/private", middleware.CheckToken())
 	{
 		private.POST("/createUser", handlers.CreateUser())
+		private.POST("/updateUtype", handlers.UpdateUserUtype())
 	}
 	router.Run()
 }

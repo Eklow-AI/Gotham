@@ -11,14 +11,12 @@ import (
 func CreateUser() gin.HandlerFunc {
 	opts := models.NewUserOptions{}
 	return func(c *gin.Context) {
-		err := c.BindJSON(&opts)
-		if err != nil {
+		if err := c.BindJSON(&opts); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": err.Error()})
 			return
 		}
 
-		err = models.InsertNewUser(opts)
-		if err != nil {
+		if err := models.InsertNewUser(opts); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": err.Error()})
 			return
 		}
@@ -27,8 +25,21 @@ func CreateUser() gin.HandlerFunc {
 	}
 }
 
+//UpdateUserUtype updates the utype of an existing user
 func UpdateUserUtype() gin.HandlerFunc {
+	opts := models.UpdateUserOptions{}
 	return func(c *gin.Context) {
-		
+		if err := c.BindJSON(&opts); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": err.Error()})
+			return
+		}
+
+		user := models.GetUser(opts.Email)
+		if err := user.SetUtype(opts.Utype); err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": err.Error()})
+			return
+		}
+		opts = models.UpdateUserOptions{}
+		c.JSON(http.StatusOK, gin.H{"success": true})
 	}
 }
