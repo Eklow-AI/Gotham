@@ -26,3 +26,9 @@ func CreateUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"success": true})
 	}
 }
+
+func UpdateUserUtype() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		
+	}
+}

@@ -50,8 +50,8 @@ func InsertNewOrg(options NewOrgOptions) (org *Org, err error) {
 }
 
 // GetOrg gets an org from the token (pk)
-func GetOrg(token string) *Org {
-	org := &Org{}
+func GetOrg(token string) (org *Org) {
+	org = &Org{}
 	DB.Where("token = ?", token).First(org)
 	return org
 }
