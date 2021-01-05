@@ -3,7 +3,6 @@ FROM golang:1.15.2-alpine3.12
 LABEL maintainer="Daniel Lobaton <dlobaton@eklow.ai>"
 
 ENV GIN_MODE=release
-ENV PORT=5000
  
 # Set working directory
 WORKDIR /app
@@ -31,7 +30,7 @@ RUN find . -name "*.go" -type f -delete
 RUN find . -name "go.*" -type f -delete
 RUN rm -rf src
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+EXPOSE 8080
 
 # Run the app
 CMD ["./Gotham"]
