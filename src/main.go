@@ -26,12 +26,10 @@ func main() {
 
 	// Set up routing
 	router := gin.Default()
-	public := router.Group("/public")
-	{
-		public.GET("/ping", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H{"message": "pong"})
-		})
-	}
+	//
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "stonks"})
+	})
 	// Admin routes that control the Gotham API
 	admin := router.Group("/admin", middleware.RequireAdmin())
 	{
