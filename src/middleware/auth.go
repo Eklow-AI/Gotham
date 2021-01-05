@@ -3,7 +3,7 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/Eklow-AI/Gotham/models"
+	"github.com/Eklow-AI/Gotham/src/models"
 	"github.com/gin-gonic/gin"
 )
 

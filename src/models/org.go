@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Eklow-AI/Gotham/services"
+	"github.com/Eklow-AI/Gotham/src/services"
 )
 
 //Org defines orgs that are allowed to use the Gotham API

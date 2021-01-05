@@ -14,8 +14,8 @@ var DB *gorm.DB
 
 // ConnectDB establishes a postgres database connection by reference
 func ConnectDB() {
-	connURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s", os.Getenv("dbHost"),
-		os.Getenv("dbPort"), os.Getenv("dbUser"), os.Getenv("dbName"), os.Getenv("dbPassword"), os.Getenv("sslmode"))
+	connURI := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s", os.Getenv("dbHost"),
+		os.Getenv("dbPort"), os.Getenv("dbUser"), os.Getenv("dbName"), os.Getenv("dbPassword"))
 	database, err := gorm.Open("postgres", connURI)
 
 	if err != nil {

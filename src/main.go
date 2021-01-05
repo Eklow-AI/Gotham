@@ -2,11 +2,12 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"time"
 
-	"github.com/Eklow-AI/Gotham/handlers"
-	"github.com/Eklow-AI/Gotham/middleware"
-	"github.com/Eklow-AI/Gotham/models"
+	"github.com/Eklow-AI/Gotham/src/handlers"
+	"github.com/Eklow-AI/Gotham/src/middleware"
+	"github.com/Eklow-AI/Gotham/src/models"
 	"github.com/getsentry/sentry-go"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -31,6 +32,12 @@ func main() {
 
 	// Set up routing
 	router := gin.Default()
+	public := router.Group("/public")
+	{
+		public.GET("/ping", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{"message": "pong"})
+		})
+	}
 	// Admin routes that control the Gotham API
 	admin := router.Group("/admin", middleware.RequireAdmin())
 	{
