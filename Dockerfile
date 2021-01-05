@@ -1,9 +1,9 @@
-FROM golang:1.15.2-alpine3.12
+FROM golang:1.15.2
 
 LABEL maintainer="Daniel Lobaton <dlobaton@eklow.ai>"
 
 ENV GIN_MODE=release
-ENV PORT 5000
+ENV PORT=5000
  
 # Set working directory
 WORKDIR /app
