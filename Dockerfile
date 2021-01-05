@@ -21,14 +21,15 @@ COPY src/go.sum .
 RUN go mod download
 
 # Copy all the app sources (recursively copies files and directories from the host into the image)
-COPY src/. .
+COPY src/ .
 
 # Build the app
-RUN go build
+RUN go build -o Gotham
 
 # Remove source files
-RUN find . -name "*.go" -type f -delete
-
+RUN find . -name "*.go" -type f -delete 
+RUN find . -name "go.*" -type f -delete
+RUN rm -rf src
 # Make port 5000 available to the world outside this container
 EXPOSE $PORT
 
