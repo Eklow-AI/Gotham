@@ -40,7 +40,7 @@ var utypeRanking = map[string]int{
 }
 
 //InsertNewUser inserts a new user struct to the db
-func InsertNewUser(options NewUserOptions) (err error) {
+func InsertNewUser(options NewUserOptions) (useer *User, err error) {
 	isValidDate := time.Now().AddDate(1, 0, 0)
 	// Give a trialing users a two week trial
 	if strings.ToLower(options.Utype) == "trial" {
@@ -55,9 +55,9 @@ func InsertNewUser(options NewUserOptions) (err error) {
 	}
 	result := DB.Create(user)
 	if result.Error != nil {
-		return errors.New(fmt.Sprintln("error inserting user:", result.Error))
+		return nil, errors.New(fmt.Sprintln("error inserting user:", result.Error))
 	}
-	return nil
+	return user, nil
 }
 
 // GetUser returns a pointer to a user struct giver an email (pk)

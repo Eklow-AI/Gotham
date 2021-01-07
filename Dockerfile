@@ -30,7 +30,7 @@ RUN find . -name "*.go" -type f -delete
 RUN find . -name "go.*" -type f -delete
 RUN rm -rf src
 # Make port 5000 available to the world outside this container
-EXPOSE 8080
+EXPOSE 5000
 
 # Run the app
 CMD ["./Gotham"]

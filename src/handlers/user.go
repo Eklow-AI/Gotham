@@ -16,7 +16,7 @@ func CreateUser() gin.HandlerFunc {
 			return
 		}
 
-		if err := models.InsertNewUser(opts); err != nil {
+		if _, err := models.InsertNewUser(opts); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": err.Error()})
 			return
 		}
