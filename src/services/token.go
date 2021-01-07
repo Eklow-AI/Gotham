@@ -1,7 +1,6 @@
 package services
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -17,13 +16,10 @@ func hash(s string) uint32 {
 }
 
 // CreateToken returns an API token string given user email, patron, and security level
-func CreateToken(email string) (token string, err error) {
-	if email == "" {
-		return "", errors.New("Token Services: Email cannot be empty")
-	}
+func CreateToken(email string) (token string) {
 	hashedEmail := hash(email)
 	uuidWithHyphen := uuid.New()
 	uuid := strings.Replace(uuidWithHyphen.String(), "-", "", -1)
 	token = fmt.Sprintf("%d%s", hashedEmail, uuid)
-	return token, nil
+	return token
 }

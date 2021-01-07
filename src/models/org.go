@@ -30,10 +30,7 @@ type NewOrgOptions struct {
 
 //InsertNewOrg inserts a new user struct to the db
 func InsertNewOrg(options NewOrgOptions) (org *Org, err error) {
-	token, err := services.CreateToken(options.Email)
-	if err != nil {
-		return &Org{}, errors.New(fmt.Sprintln("error inserting org:", err))
-	}
+	token:= services.CreateToken(options.Email)
 	org = &Org{
 		Email:     options.Email,
 		Name:      options.Name,
