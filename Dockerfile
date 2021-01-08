@@ -25,9 +25,7 @@ COPY src/ .
 # Build the app
 RUN go build -o Gotham
 
-# Remove source files
-RUN find . -name "*.go" -type f -delete 
-RUN find . -name "go.*" -type f -delete
+# Remove duplicate source files
 RUN rm -rf src
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
