@@ -1,7 +1,7 @@
 # Gotham
 [![Eklow AI](https://circleci.com/gh/Eklow-AI/Gotham.svg?style=shield&circle-token=ac7fe26ee034d9f334b586904d69c877633b2f54)](https://app.circleci.com/pipelines/github/Eklow-AI/Gotham)
 
-The Gotham API for compatability scores
+Gotham: A GovTech API for contract compatability scores in companies
 
 ## Infra
 The API runs as a containerized application on an AWS Elastic Beanstalk (EBS) environment
