@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker: # Run the steps using Docker
-      - image:  danylobaton/gotham:0.2.1
+      - image:  circleci/golang:1.15.2
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
