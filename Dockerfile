@@ -27,6 +27,10 @@ RUN go build -o Gotham
 
 # Remove duplicate source files
 RUN rm -rf src
+
+# Install Git for CircleCI
+RUN apk add git
+
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
