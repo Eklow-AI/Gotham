@@ -8,8 +8,6 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
 
-    parallelism: 2
-
     environment:
       TEST_RESULTS: /tmp/test-results
 
