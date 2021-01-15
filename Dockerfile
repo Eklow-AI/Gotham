@@ -1,13 +1,12 @@
 FROM golang:1.15.2-alpine3.12
 
 LABEL maintainer="Daniel Lobaton <dlobaton@eklow.ai>"
-
-ENV GIN_MODE=release
  
 # Set working directory
 WORKDIR /app
 
-# DB env - dev
+# env vars
+ENV GIN_MODE=release
 ENV dbHost=gotham-dev.cuevwe5bpzjq.us-east-2.rds.amazonaws.com
 ENV dbPort=5432
 ENV dbName=gotham
@@ -28,11 +27,8 @@ RUN go build -o Gotham
 # Remove duplicate source files
 RUN rm -rf src
 
-# Install Git for CircleCI
-RUN apk add git
-
 # Make port 5000 available to the world outside this container
-EXPOSE 5000
+EXPOSE 8080
 
-# Run the app
-CMD ["./Gotham"]
+RUN go get github.com/githubnemo/CompileDaemon
+ENTRYPOINT CompileDaemon --build="go build main.go" --command=./main
