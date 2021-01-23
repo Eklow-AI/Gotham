@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/Eklow-AI/Gotham/src/models"
 	"golang.org/x/oauth2"
@@ -65,7 +66,7 @@ func getVendorHistory(cage string) (vendorHistory []map[string]interface{}) {
 				Value:    cage,
 			},
 		},
-		RecordPerPage: 5,
+		RecordPerPage: 120,
 		CurrentPage:   1,
 		SortFilter: []models.Filter{
 			{
@@ -94,10 +95,13 @@ func getVendorHistory(cage string) (vendorHistory []map[string]interface{}) {
 }
 
 func getComposition(vendorHistory []map[string]interface{}, field string) (composition map[string]float64) {
+	composition = make(map[string]float64)
 	for _, contract := range vendorHistory {
-		label := contract[field].(string)
-		_, exist := composition[label]
-		if exist {
+		label, ok := contract[field].(string)
+		if !ok {
+			label = "unknown"
+		}
+		if _, ok := composition[label]; ok {
 			composition[label] += 1.0
 		} else {
 			composition[label] = 1.0
@@ -110,14 +114,36 @@ func getComposition(vendorHistory []map[string]interface{}, field string) (compo
 	return composition
 }
 
+func getVendorProfile(cage string) (profile models.VendorProfile) {
+	vendorHistory := getVendorHistory(cage)
+	profile.Name = vendorHistory[0]["vendor_name"].(string)
+	profile.Cage = cage
+	profile.FundingAgency = getComposition(vendorHistory, "funding_agency_name")
+	profile.Naics = getComposition(vendorHistory, "naics_code")
+	profile.Psc = getComposition(vendorHistory, "product_or_service_code_text")
+	profile.SetAsides = getComposition(vendorHistory, "type_of_set_aside_description")
+	profile.COSizeSelection = getComposition(vendorHistory, "contracting_officer_business_size_determination_description")
+	profile.COs = getComposition(vendorHistory, "last_modified_by")
+	profile.PlacesOfPerf = getComposition(vendorHistory, "place_of_performance_zip_code_city")
+	// Cast string to int because redshirt returns Zip codes as strings
+	sZip := vendorHistory[0]["phy_zip_code"].(string)
+	zip, err := strconv.ParseInt(sZip, 10, 32)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	profile.Zip = zip
+
+	return profile
+}
+
 func main() {
 	SetupSDK()
-	vendorHistory := getVendorHistory("6ZP36")
-	data := getComposition(vendorHistory, "funding_agency_name")
+	data := getVendorProfile("6ZP36")
 	b, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
 		fmt.Println("error:", err)
 	}
 	fmt.Print(string(b))
-
 }
