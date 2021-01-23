@@ -22,7 +22,6 @@ func ConnectDB() {
 		log.Fatal("Problem connecting to database:", err)
 	}
 	//Migrate models
-	database.AutoMigrate(&User{})
 	database.AutoMigrate(&Org{})
 	DB = database
 }

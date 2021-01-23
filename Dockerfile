@@ -5,6 +5,10 @@ LABEL maintainer="Daniel Lobaton <dlobaton@eklow.ai>"
 # Set working directory
 WORKDIR /app
 
+# Creds
+ENV rsUsername=api_score
+ENV rsPassword=d627StTYf#y@lzg#Ej1*tmHL
+
 # env vars
 ENV GIN_MODE=release
 ENV dbHost=gotham-dev.cuevwe5bpzjq.us-east-2.rds.amazonaws.com
