@@ -23,10 +23,9 @@ type info struct {
 	SAMUpdate     string `json:"SAM Update"`
 	FDPSUpdate    string `json:"FPDS Update"`
 	TotalRecords  int64  `json:"totalRecords2"`
-	RecordLimit   int64  `json:"record_limit`
-	cacheID       string `json:"cache_id"`
-	cacheIDLength int64  `json:"cache_id_length"`
-	usingCache    bool   `json:"Using Cache"`
+	CacheID       string `json:"cache_id"`
+	CacheIDLength int64  `json:"cache_id_length"`
+	UsingCache    bool   `json:"Using Cache"`
 }
 
 type RedShirtQuery struct {
