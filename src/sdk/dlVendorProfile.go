@@ -35,14 +35,12 @@ func getVendorHistory(cage string) (vendorHistory []map[string]interface{}) {
 		},
 	}
 	data, err := json.Marshal(query)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	resp, err := client.Post("https://redshirttest.g2xchange.com/wp-json/api/v1/query/?db=MM10TEST",
 		"application/json", bytes.NewBuffer(data))
-
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -75,8 +73,8 @@ func getComposition(vendorHistory []map[string]interface{}, field string) (compo
 
 func getVendorProfile(cage string) (profile models.VendorProfile) {
 	vendorHistory := getVendorHistory(cage)
-	profile.Name = vendorHistory[0]["vendor_name"].(string)
 	profile.Cage = cage
+	profile.Name = vendorHistory[0]["vendor_name"].(string)
 	profile.FundingAgency = getComposition(vendorHistory, "funding_agency_name")
 	profile.Naics = getComposition(vendorHistory, "naics_code")
 	profile.Psc = getComposition(vendorHistory, "product_or_service_code_text")
@@ -87,12 +85,10 @@ func getVendorProfile(cage string) (profile models.VendorProfile) {
 	// Cast string to int because redshirt returns Zip codes as strings
 	sZip := vendorHistory[0]["phy_zip_code"].(string)
 	zip, err := strconv.ParseInt(sZip, 10, 32)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	profile.Zip = zip
-
 	return profile
 }

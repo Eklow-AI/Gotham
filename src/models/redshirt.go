@@ -1,5 +1,6 @@
 package models
 
+// RedShirtResp is the struct that binds to the RedShirt API response objects
 type RedShirtResp struct {
 	Status               status                   `json:"status"`
 	NoOfPages            int64                    `json:"noofPages"`
@@ -10,6 +11,29 @@ type RedShirtResp struct {
 	AverageValueOfAwards string                   `json:"averageValueOfAwards"`
 	TimeToExecute        float64                  `json:"time_to_execute"`
 	ListData             []map[string]interface{} `json:"listdata"`
+}
+
+// RedShirtQuery is the struct used to create RedShirt API queries
+type RedShirtQuery struct {
+	Object        string   `json:"object"`
+	Version       string   `json:"versions"`
+	Timeout       int64    `json:"timeout"`
+	RecordLimit   int64    `json:"record_limit"`
+	Rows          bool     `json:"rows"`
+	Totals        bool     `json:"totals"`
+	Lists         bool     `json:"lists"`
+	SearchFilter  []Filter `json:"searchFilter"`
+	RecordPerPage int64    `json:"recordPerPage"`
+	CurrentPage   int64    `json:"currentPage"`
+	SortFilter    []Filter `json:"sortFilter"`
+}
+
+// Filter is the struct used to filter RedShirt API data
+type Filter struct {
+	Field    string `json:"field"`
+	Operator string `json:"operator"`
+	Value    string `json:"value"`
+	Order    string `json:"order"`
 }
 
 type status struct {
@@ -26,25 +50,4 @@ type info struct {
 	CacheID       string `json:"cache_id"`
 	CacheIDLength int64  `json:"cache_id_length"`
 	UsingCache    bool   `json:"Using Cache"`
-}
-
-type RedShirtQuery struct {
-	Object        string   `json:"object"`
-	Version       string   `json:"versions"`
-	Timeout       int64    `json:"timeout"`
-	RecordLimit   int64    `json:"record_limit"`
-	Rows          bool     `json:"rows"`
-	Totals        bool     `json:"totals"`
-	Lists         bool     `json:"lists"`
-	SearchFilter  []Filter `json:"searchFilter"`
-	RecordPerPage int64    `json:"recordPerPage"`
-	CurrentPage   int64    `json:"currentPage"`
-	SortFilter    []Filter `json:"sortFilter"`
-}
-
-type Filter struct {
-	Field    string `json:"field"`
-	Operator string `json:"operator"`
-	Value    string `json:"value"`
-	Order    string `json:"order"`
 }

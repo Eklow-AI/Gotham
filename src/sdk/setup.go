@@ -19,18 +19,16 @@ func getRedShirtJWT() string {
 		"password": os.Getenv("rsPassword"),
 	}
 	data, err := json.Marshal(login)
-
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	resp, err := http.Post("https://redshirttest.g2xchange.com/wp-json/jwt-auth/v1/token",
 		"application/json", bytes.NewBuffer(data))
-	defer resp.Body.Close()
-	
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer resp.Body.Close()
 
 	var dataResp map[string]string
 	json.NewDecoder(resp.Body).Decode(&dataResp)
