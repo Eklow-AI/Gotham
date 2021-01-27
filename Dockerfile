@@ -25,9 +25,6 @@ RUN go mod download
 # Copy all the app sources (recursively copies files and directories from the host into the image)
 COPY src/ .
 
-# Build the app
-RUN go build -o Gotham
-
 # Remove duplicate source files
 RUN rm -rf src
 
