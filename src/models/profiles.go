@@ -21,8 +21,8 @@ type ContractProfile struct {
 	FundingAgency   float64
 	Naics           float64 // d
 	Psc             float64 // d
-	SetAside        float64
-	COSizeSelection float64
+	SetAside        float64 // d
+	COSizeSelection float64 // d
 	CO              float64 // d
 	PlaceOfPerf     float64
 	NumOffers       int64 // d
