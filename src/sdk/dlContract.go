@@ -8,9 +8,6 @@ import (
 	"github.com/Eklow-AI/Gotham/src/models"
 )
 
-type cStats struct {
-}
-
 func getContract(id string) (contract models.ContractProps) {
 	query := models.RedShirtQuery{
 		Object:      "contracts",
@@ -51,6 +48,7 @@ func getContract(id string) (contract models.ContractProps) {
 	json.NewDecoder(resp.Body).Decode(&dataResp)
 	// TODO: what if any value comes in nil? This could break with type assertions
 	contract = models.ContractProps{
+		ContractAgency:  dataResp.ListData[0]["contract_agency_name"].(string),
 		FundingAgency:   dataResp.ListData[0]["funding_agency_name"].(string),
 		Naics:           dataResp.ListData[0]["naics_code"].(string),
 		Psc:             dataResp.ListData[0]["product_or_service_code_text"].(string),
@@ -65,6 +63,7 @@ func getContract(id string) (contract models.ContractProps) {
 
 func getContractProfile(contract models.ContractProps, vendor models.VendorProfile) models.ContractProfile {
 	return models.ContractProfile{
+		ContractAgency:  vendor.ContractAgency[contract.ContractAgency],
 		FundingAgency:   vendor.FundingAgency[contract.FundingAgency],
 		Naics:           vendor.Naics[contract.Naics],
 		Psc:             vendor.Psc[contract.Psc],

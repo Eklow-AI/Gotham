@@ -4,6 +4,7 @@ package models
 type VendorProfile struct {
 	Name            string
 	Cage            string
+	ContractAgency  map[string]float64
 	FundingAgency   map[string]float64
 	Naics           map[string]float64
 	Psc             map[string]float64
@@ -16,18 +17,20 @@ type VendorProfile struct {
 
 // ContractProfile describes an opportunity for scoring
 type ContractProfile struct {
+	ContractAgency  float64 // d
 	FundingAgency   float64
-	Naics           float64
-	Psc             float64
+	Naics           float64 // d
+	Psc             float64 // d
 	SetAside        float64
 	COSizeSelection float64
-	CO              float64
+	CO              float64 // d
 	PlaceOfPerf     float64
-	NumOffers       int64
+	NumOffers       int64 // d
 }
 
 // ContractProps describes the properties of a contract
 type ContractProps struct {
+	ContractAgency  string
 	FundingAgency   string
 	Naics           string
 	Psc             string

@@ -75,7 +75,7 @@ func getVendorProfile(cage string) (profile models.VendorProfile) {
 	vendorHistory := getVendorHistory(cage)
 	profile.Cage = cage
 	profile.Name = vendorHistory[0]["vendor_name"].(string)
-	profile.FundingAgency = getComposition(vendorHistory, "funding_agency_name")
+	profile.ContractAgency = getComposition(vendorHistory, "contract_agency_name")
 	profile.Naics = getComposition(vendorHistory, "naics_code")
 	profile.Psc = getComposition(vendorHistory, "product_or_service_code_text")
 	profile.SetAsides = getComposition(vendorHistory, "type_of_set_aside_description")
