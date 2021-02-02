@@ -17,15 +17,15 @@ type VendorProfile struct {
 
 // ContractProfile describes an opportunity for scoring
 type ContractProfile struct {
-	ContractAgency  float64 // d
+	ContractAgency  float64
 	FundingAgency   float64
-	Naics           float64 // d
-	Psc             float64 // d
-	SetAside        float64 // d
-	COSizeSelection float64 // d
-	CO              float64 // d
+	Naics           float64
+	Psc             float64
+	SetAside        float64
+	COSizeSelection float64
+	CO              float64
 	PlaceOfPerf     float64
-	NumOffers       int64 // d
+	NumOffers       int64
 }
 
 // ContractProps describes the properties of a contract

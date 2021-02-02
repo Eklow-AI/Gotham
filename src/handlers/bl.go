@@ -9,7 +9,7 @@ import (
 
 type baseRequest struct {
 	Cage string `json:"cage" binding:"required"`
-	CID  string `json:"cid" binding:"required"`
+	Cid  string `json:"cid" binding:"required"`
 }
 
 // GetScore handler gets a single compatability score for a vendor
@@ -21,9 +21,8 @@ func GetScore() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"success": false, "error": err.Error()})
 			return
 		}
-		score := sdk.GetScore()
+		score := sdk.GetScore(params.Cage, params.Cid)
 		params = baseRequest{}
 		c.JSON(http.StatusOK, gin.H{"success": true, "score": score})
-
 	}
 }

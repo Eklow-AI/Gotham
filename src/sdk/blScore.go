@@ -24,7 +24,7 @@ func GetScore(cage string, cid string) (score float64) {
 	totalWeight := w0 + w1 + w2 + w3 + w4 + w5
 	score = coScore + acScore + naicsScore + pscScore + offerScore + setAsideScore + coSizeScore
 	score = score / totalWeight
-	return score
+	return score * 100
 }
 
 func calcCOScore(co string, COs map[string]float64) (score float64, weight float64) {

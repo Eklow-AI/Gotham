@@ -12,7 +12,7 @@ import (
 func getVendorHistory(cage string) (vendorHistory []map[string]interface{}) {
 	query := models.RedShirtQuery{
 		Object:      "contracts",
-		Version:     "1.0",
+		Version:     "1.2",
 		Timeout:     45000,
 		RecordLimit: 10000,
 		Rows:        true,

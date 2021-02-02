@@ -11,7 +11,7 @@ import (
 func getContract(id string) (contract models.ContractProps) {
 	query := models.RedShirtQuery{
 		Object:      "contracts",
-		Version:     "1.0",
+		Version:     "1.2",
 		Timeout:     45000,
 		RecordLimit: 10000,
 		Rows:        true,
@@ -19,8 +19,8 @@ func getContract(id string) (contract models.ContractProps) {
 		Lists:       false,
 		SearchFilter: []models.Filter{
 			{
-				Field:    "contract_name", //placeholder until I find out how to look up by ID
-				Operator: "tsquery",
+				Field:    "contract_number",
+				Operator: "eq",
 				Value:    id,
 			},
 		},
@@ -46,19 +46,30 @@ func getContract(id string) (contract models.ContractProps) {
 
 	var dataResp models.RedShirtResp
 	json.NewDecoder(resp.Body).Decode(&dataResp)
-	// TODO: what if any value comes in nil? This could break with type assertions
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	contract = models.ContractProps{
-		ContractAgency:  dataResp.ListData[0]["contract_agency_name"].(string),
-		FundingAgency:   dataResp.ListData[0]["funding_agency_name"].(string),
-		Naics:           dataResp.ListData[0]["naics_code"].(string),
-		Psc:             dataResp.ListData[0]["product_or_service_code_text"].(string),
-		SetAside:        dataResp.ListData[0]["type_of_set_aside_description"].(string),
-		COSizeSelection: dataResp.ListData[0]["contracting_officer_business_size_determination_description"].(string),
-		CO:              dataResp.ListData[0]["last_modified_by"].(string),
-		PlaceOfPerf:     dataResp.ListData[0]["place_of_performance_zip_code_city"].(string),
-		NumOffers:       dataResp.ListData[0]["number_of_offers_received"].(int64),
+		ContractAgency:  dataResp.ContractData[0].ContractAgency,
+		FundingAgency:   dataResp.ContractData[0].FundingAgency,
+		Naics:           dataResp.ContractData[0].Naics,
+		Psc:             dataResp.ContractData[0]["product_or_service_code_text"],
+		SetAside:        dataResp.ContractData[0]["type_of_set_aside_description"],
+		COSizeSelection: dataResp.ContractData[0]["contracting_officer_business_size_determination_description"],
+		CO:              dataResp.ContractData[0]["last_modified_by"],
+		PlaceOfPerf:     dataResp.ContractData[0]["place_of_performance_zip_code_city"],
+		NumOffers:       numOffers,
 	}
 	return contract
+}
+
+func recoverAssertion(input interface{}) string {
+	output, ok := input.(string)
+	if !ok {
+		return "unknown"
+	}
+	return output
 }
 
 func getContractProfile(contract models.ContractProps, vendor models.VendorProfile) models.ContractProfile {

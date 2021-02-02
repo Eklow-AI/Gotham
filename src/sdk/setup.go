@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"os"
 
 	"golang.org/x/oauth2"
 )
@@ -15,8 +14,8 @@ var client *http.Client
 
 func getRedShirtJWT() string {
 	login := map[string]string{
-		"username": os.Getenv("rsUsername"),
-		"password": os.Getenv("rsPassword"),
+		"username": "api_score",                //os.Getenv("rsUsername"),
+		"password": "d627StTYf#y@lzg#Ej1*tmHL", //os.Getenv("rsPassword"),
 	}
 	data, err := json.Marshal(login)
 	if err != nil {
