@@ -28,8 +28,9 @@ COPY src/ .
 # Remove duplicate source files
 RUN rm -rf src
 
-# Make port 5000 available to the world outside this container
+# Build the app
+RUN go build -o Gotham
+# Make port 8080 available to the world outside this container
 EXPOSE 8080
-
-RUN go get github.com/githubnemo/CompileDaemon
-ENTRYPOINT CompileDaemon --build="go build main.go" --command=./main
+# Run the app
+CMD ["./Gotham"]
