@@ -3,12 +3,19 @@ package sdk
 import (
 	"math"
 	"sort"
+
+	"github.com/Eklow-AI/Gotham/src/models"
 )
 
 // GetScore returns the compatability score of a vendor with a contract
 func GetScore(cage string, cid string) (score float64) {
-	vendor := getVendorProfile(cage)
+	// create a go routine to get the vendor profile
+	c1 := make(chan models.VendorProfile)
+	go getCVendorProfile(cage, c1)
+	// use the main thread to get the contract data
 	contract := getContract(cid)
+	vendor := <-c1
+	// score vendor-contract fit
 	coScore, w0 := calcCOScore(contract.CO, vendor.COs)
 	acScore, w1 := calcContractAgencyScore(contract.ContractAgency, vendor.ContractAgency)
 	naicsScore, w2 := calcNaics(contract.Naics, vendor.Naics)

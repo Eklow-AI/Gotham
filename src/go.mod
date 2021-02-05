@@ -6,6 +6,7 @@ require (
 	github.com/getsentry/sentry-go v0.9.0
 	github.com/gin-gonic/gin v1.6.3
 	github.com/google/uuid v1.1.4
+	github.com/guregu/null v4.0.0+incompatible // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/mholt/binding v0.3.0
 	golang.org/x/oauth2 v0.0.0-20210113205817-d3ed898aa8a3
