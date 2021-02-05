@@ -9,14 +9,6 @@ WORKDIR /app
 ENV rsUsername=api_score
 ENV rsPassword=d627StTYf#y@lzg#Ej1*tmHL
 
-# env vars
-ENV GIN_MODE=release
-ENV dbHost=gotham-dev.cuevwe5bpzjq.us-east-2.rds.amazonaws.com
-ENV dbPort=5432
-ENV dbName=gotham
-ENV dbUser=Quiver
-ENV dbPassword=JC7lj4odvCQcEFVJoUo2
-
 # Download dependencies
 COPY src/go.mod .
 COPY src/go.sum .
