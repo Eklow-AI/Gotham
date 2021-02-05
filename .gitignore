@@ -17,3 +17,4 @@ vendor/
 
 # Executable binaries
 src/Gotham
+docker-compose.yml

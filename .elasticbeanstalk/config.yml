@@ -3,7 +3,7 @@ branch-defaults:
     environment: Gotham
     group_suffix: null
   rsIntegration:
-    environment: Gotham
+    environment: Gotham-dev
 environment-defaults:
   Gotham2:
     branch: null
