@@ -1,16 +1,16 @@
 package models
 
 type ContractProfile struct {
+	PhyZipCode         int
+	Naics              int
+	NumOffers          int
+	TotalValue         float64
 	Cage               string
 	VendorName         string
-	PhyZipCode         int
 	IdvID              string
 	ID                 string
 	Psc                string
 	ContractAgencyName string
-	Naics              int
-	TotalValue         float64
-	NumOffers          int
 	PlacePerfCity      string
 	StateCode          string
 	SizeSelection      string
@@ -19,11 +19,11 @@ type ContractProfile struct {
 }
 
 type VendorProfile struct {
+	Zip       int
 	Cage      string
 	Name      string
-	Zip       int
-	Psc       map[int64]float64
 	Naics     map[int64]float64
+	Psc       map[string]float64
 	COs       map[string]float64
 	SetAsides map[string]float64
 }
@@ -61,9 +61,16 @@ func PassToProfile(contract RSContract) ContractProfile {
 	if contract.CO != nil {
 		profile.CO = *contract.CO
 	}
-	profile.SetAside = "unknown"
+	profile.SetAside = "NO SET ASIDE USED."
 	if contract.SetAside != nil {
 		profile.SetAside = *contract.SetAside
+		if *contract.SetAside == "" {
+			profile.SetAside = "NO SET ASIDE USED."
+		}
 	}
 	return profile
+}
+
+func CalcPercentBreakdown(items []string) map[string]float64 {
+
 }
