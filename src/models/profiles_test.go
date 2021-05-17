@@ -10,7 +10,7 @@ type passToContractTest struct {
 	expected ContractProfile
 }
 
-func TestPassToContractProfile(t *testing.T) {
+func TestPassContractToProfile(t *testing.T) {
 	// Test pointer values
 	offers := 3
 	zip := "Miami"
@@ -130,7 +130,7 @@ func TestPassToContractProfile(t *testing.T) {
 		},
 	}
 	for num, test := range passToContractTests {
-		if output := PassToProfile(test.arg1); !reflect.DeepEqual(output, test.expected) {
+		if output := PassContractToProfile(test.arg1); !reflect.DeepEqual(output, test.expected) {
 			t.Errorf("Output not equal to expected struct for test %d", num)
 		}
 	}
@@ -142,16 +142,16 @@ type calcPercentBreakdownTest struct {
 }
 
 var calcPercentBreakdownTests = []calcPercentBreakdownTest{
-	{[]string{"agency1", "agency2", "agency3", "agency4"},map[string]float64{"agency1": 0.25, "agency2": 0.25, "agency3": 0.25, "agency4": 0.25},},
-	{[]string{"DoD"},map[string]float64{"DoD": 1.0},},
-	{[]string{"DoD","VA"},map[string]float64{"DoD": 0.5, "VA": 0.5},},
-	{[]string{},map[string]float64{},},
+	{[]string{"agency1", "agency2", "agency3", "agency4"}, map[string]float64{"agency1": 0.25, "agency2": 0.25, "agency3": 0.25, "agency4": 0.25}},
+	{[]string{"DoD"}, map[string]float64{"DoD": 1.0}},
+	{[]string{"DoD", "VA"}, map[string]float64{"DoD": 0.5, "VA": 0.5}},
+	{[]string{}, map[string]float64{}},
 }
 
 func TestPercentBreakdown(t *testing.T) {
 	for num, test := range calcPercentBreakdownTests {
 		if output := CalcPercentBreakdown(test.arg1); !reflect.DeepEqual(output, test.expected) {
 			t.Errorf("Output not equal to expected map for test %d", num)
-		} 
+		}
 	}
 }

@@ -28,7 +28,7 @@ type VendorProfile struct {
 	SetAsides map[string]float64
 }
 
-func PassToProfile(contract RSContract) ContractProfile {
+func PassContractToProfile(contract RSContract) ContractProfile {
 	profile := ContractProfile{}
 	// Populate all standard fields to the rest of the profile
 	profile.Cage = contract.Cage
@@ -72,5 +72,19 @@ func PassToProfile(contract RSContract) ContractProfile {
 }
 
 func CalcPercentBreakdown(items []string) map[string]float64 {
-
+	breakdown := map[string]float64{}
+	// First, populate the map with the count of each item
+	for _, item := range items {
+		if _, ok := breakdown[item]; ok {
+			breakdown[item] += 1.0
+			continue
+		}
+		breakdown[item] = 1
+	}
+	// Then calculate the percentages of each
+	totalItems := float64(len(items))
+	for key, val := range breakdown {
+		breakdown[key] = val / totalItems
+	}
+	return breakdown
 }
