@@ -1,5 +1,7 @@
 package models
 
+// ContractProfile is the standard struct used by the SDK
+// to analyze compatability scores
 type ContractProfile struct {
 	PhyZipCode         int
 	Naics              int
@@ -18,17 +20,22 @@ type ContractProfile struct {
 	SetAside           string
 }
 
+// VendorProfile is the standard struct used by the SDK
+// to represent vendor profiles
 type VendorProfile struct {
-	Zip       int
-	Cage      string
-	Name      string
-	Naics     map[int64]float64
-	Psc       map[string]float64
-	COs       map[string]float64
-	SetAsides map[string]float64
+	Zip             int
+	Cage            string
+	Name            string
+	AvgContractSize float64
+	Naics           map[int64]float64
+	Psc             map[string]float64
+	COs             map[string]float64
+	SetAsides       map[string]float64
 }
 
-func PassContractToProfile(contract RSContract) ContractProfile {
+// PassToCProfile accepts an RDContract object and translates it to
+// a ContractProfile.
+func PassToCProfile(contract RSContract) ContractProfile {
 	profile := ContractProfile{}
 	// Populate all standard fields to the rest of the profile
 	profile.Cage = contract.Cage
@@ -69,6 +76,11 @@ func PassContractToProfile(contract RSContract) ContractProfile {
 		}
 	}
 	return profile
+}
+
+func PassToVProfile(contracts []RSContract) VendorProfile {
+	vendor := VendorProfile{}
+
 }
 
 func CalcPercentBreakdown(items []string) map[string]float64 {

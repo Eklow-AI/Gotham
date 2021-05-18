@@ -130,7 +130,7 @@ func TestPassContractToProfile(t *testing.T) {
 		},
 	}
 	for num, test := range passToContractTests {
-		if output := PassContractToProfile(test.arg1); !reflect.DeepEqual(output, test.expected) {
+		if output := PassToCProfile(test.arg1); !reflect.DeepEqual(output, test.expected) {
 			t.Errorf("Output not equal to expected struct for test %d", num)
 		}
 	}
@@ -154,4 +154,9 @@ func TestPercentBreakdown(t *testing.T) {
 			t.Errorf("Output not equal to expected map for test %d", num)
 		}
 	}
+}
+
+type passToVProfileTest struct {
+	arg1     []RSContract
+	expected map[string]float64
 }
