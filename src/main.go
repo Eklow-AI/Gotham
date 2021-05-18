@@ -44,7 +44,7 @@ func main() {
 	logger = log.With(logger, "ts", log.DefaultTimestampUTC, "loc", log.DefaultCaller)
 	loggingMiddleware := middleware.LoggingMiddleware(logger)
 	loggedRouter := loggingMiddleware(router)
-	
+
 	// Start application
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), loggedRouter); err != nil {
 		logger.Log("status", "fatal", "err", err)

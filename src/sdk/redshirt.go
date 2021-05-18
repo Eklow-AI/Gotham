@@ -1,9 +1,17 @@
-package models
+package sdk
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"log"
+	"os"
+)
 
 type searchFilter struct {
 	Field    string `json:"field"`
 	Operator string `json:"operator"`
-	Value    int    `json:"value"`
+	Value    string `json:"value"`
 }
 
 type sortFilter struct {
@@ -15,15 +23,15 @@ type sortFilter struct {
 type RSRequest struct {
 	Object        string         `json:"object"`
 	Version       string         `json:"version"`
-	Timeout       int            `json:"timeout"`
+	TimeOut       int            `json:"timeout"`
 	RecordLimit   int            `json:"record_limit"`
 	Rows          bool           `json:"rows"`
 	Totals        bool           `json:"totals"`
 	Lists         bool           `json:"lists"`
-	Searchfilter  []searchFilter `json:"searchFilter"`
+	SearchFilters []searchFilter `json:"searchFilter"`
 	Recordperpage int            `json:"recordPerPage"`
 	Currentpage   int            `json:"currentPage"`
-	Sortfilter    []sortFilter   `json:"sortFilter"`
+	SortFilters   []sortFilter   `json:"sortFilter"`
 }
 
 // RSResponse
@@ -35,7 +43,7 @@ type RSResponse struct {
 	Totalvalueofawards   int          `json:"totalValueOfAwards"`
 	Averagevalueofawards int          `json:"averageValueOfAwards"`
 	TimeToExecute        string       `json:"time_to_execute"`
-	Listdata             []RSContract `json:"listdata"`
+	ListData             []RSContract `json:"listdata"`
 }
 
 // RSContract represent the struct of the raw contract data model
@@ -56,4 +64,47 @@ type RSContract struct {
 	SizeSelection      *string `json:"contracting_officer_business_size_determination_description"`
 	CO                 *string `json:"last_modified_by"`
 	SetAside           *string `json:"type_of_set_aside_description"`
+}
+
+
+func getContractFromID(id string) RSContract {
+	query := RSRequest{
+		Object:      "contracts",
+		Version:     "1.0",
+		TimeOut:     45000,
+		RecordLimit: 10000,
+		Rows:        true,
+		Totals:      true,
+		Lists:       false,
+		SearchFilters: []searchFilter{
+			{
+				Field:    "contract_number",
+				Operator: "eq",
+				Value:    id,
+			},
+		},
+		Recordperpage: 1,
+		Currentpage:   1,
+		SortFilters: []sortFilter{
+			{
+				Field: "date_signed",
+				Order: "desc",
+			},
+		},
+	}
+	data, err := json.Marshal(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	resp, err := client.Post(fmt.Sprintf("%s%s", os.Getenv("RS_URI"), "/wp-json/api/v1/query/?db=MM10TEST"), "application/json", bytes.NewBuffer(data))
+	if err != nil {
+		log.Fatal(err)
+	}
+	var rsData RSResponse
+	json.NewDecoder(resp.Body).Decode(&rsData)
+	contracts := rsData.ListData
+	if len(contracts) < 1 {
+		return RSContract{}
+	}
+	return contracts[0]
 }
