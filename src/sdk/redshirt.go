@@ -66,7 +66,6 @@ type RSContract struct {
 	SetAside           *string `json:"type_of_set_aside_description"`
 }
 
-
 func getContractFromID(id string) RSContract {
 	query := RSRequest{
 		Object:      "contracts",
@@ -100,8 +99,13 @@ func getContractFromID(id string) RSContract {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	var rsData RSResponse
-	json.NewDecoder(resp.Body).Decode(&rsData)
+	err = json.NewDecoder(resp.Body).Decode(&rsData)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	contracts := rsData.ListData
 	if len(contracts) < 1 {
 		return RSContract{}
