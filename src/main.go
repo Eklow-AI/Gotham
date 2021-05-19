@@ -20,7 +20,6 @@ func main() {
 	sdk.SetupSDK()
 	contracts := sdk.GetContractsFromCage("6ZP36")
 	fmt.Println(len(contracts))
-
 	// /*
 	//  * Create and configure router and all its routes
 	//  */

@@ -80,6 +80,11 @@ func getRSResponse(query RSRequest) (rsData RSResponse, err error) {
 	}
 	err = json.NewDecoder(resp.Body).Decode(&rsData)
 
+	if _, ok := err.(*json.UnmarshalTypeError); ok {
+		rsData.ListData = []RSContract{}
+		return rsData, nil
+	}
+
 	if err != nil {
 		return RSResponse{}, err
 	}
@@ -130,61 +135,21 @@ func GetContractsFromCage(cage string) []RSContract {
 	defer func() {
 		fmt.Println("Execution Time: ", time.Since(start))
 	}()
-
-	recordsPerPage := 1
-	currPage := 1
-	query := RSRequest{
-		Object:      "contracts",
-		Version:     "1.2",
-		TimeOut:     45000,
-		RecordLimit: 10000,
-		Rows:        true,
-		Totals:      true,
-		Lists:       false,
-		SearchFilters: []searchFilter{
-			{
-				Field:    "cage_code",
-				Operator: "eq",
-				Value:    cage,
-			},
-		},
-		RecordPerPage: recordsPerPage,
-		CurrentPage:   currPage,
-		SortFilters: []sortFilter{
-			{
-				Field: "date_signed",
-				Order: "desc",
-			},
-		},
-	}
-	data, err := getRSResponse(query)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	if len(data.ListData) < 1 {
-		return []RSContract{}
-	}
-
 	// grab the first contract, create an array the size of all contracts discovered, and then
 	// add the first contract to that array
-	contract := data.ListData[0]
-	base := 10
-	pages := data.AwardsDiscovered / base
-	if data.AwardsDiscovered%base != 0 {
-		pages += 1
-	}
-
-	contracts := make([]RSContract, pages)
-	contracts[0] = contract
+	recordsPerPage := 10
+	pages := 6
+	contractMap := make([][]RSContract, recordsPerPage*pages)
 	wg := sync.WaitGroup{}
 	// Get the rest of the contracts concurrently
-	for page := 1; page < pages; page++ {
+	for page := 0; page < pages; page++ {
 		wg.Add(1)
-
 		go func(currPage int) {
-			query = RSRequest{
+			start := time.Now()
+			defer func() {
+				fmt.Println("Gorouting Exec: ", time.Since(start))
+			}()
+			query := RSRequest{
 				Object:      "contracts",
 				Version:     "1.2",
 				TimeOut:     45000,
@@ -199,7 +164,7 @@ func GetContractsFromCage(cage string) []RSContract {
 						Value:    cage,
 					},
 				},
-				RecordPerPage: base,
+				RecordPerPage: recordsPerPage,
 				CurrentPage:   currPage,
 				SortFilters: []sortFilter{
 					{
@@ -209,14 +174,21 @@ func GetContractsFromCage(cage string) []RSContract {
 				},
 			}
 			response, err := getRSResponse(query)
-			contract = response.ListData[0]
-			contracts[currPage-1] = contract
 			if err != nil {
 				log.Fatal(err)
 			}
+			if len(response.ListData) < 1 {
+				fmt.Println("Useless Request")
+			}
+			contractMap[currPage] = response.ListData
 			wg.Done()
 		}(page + 1)
 	}
 	wg.Wait()
+	// O(N) time complexity becaused append is O(1)
+	contracts := []RSContract{}
+	for _, val := range contractMap {
+		contracts = append(contracts, val...)
+	}
 	return contracts
 }
