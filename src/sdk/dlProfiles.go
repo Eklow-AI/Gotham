@@ -35,7 +35,7 @@ type VendorProfile struct {
 
 // PassToCProfile accepts an RDContract object and translates it to
 // a ContractProfile.
-func PassToCProfile(contract RSContract) ContractProfile {
+func PassRSToCProfile(contract RSContract) ContractProfile {
 	profile := ContractProfile{}
 	// Populate all standard fields to the rest of the profile
 	profile.Cage = contract.Cage
@@ -78,7 +78,7 @@ func PassToCProfile(contract RSContract) ContractProfile {
 	return profile
 }
 
-func PassToVProfile(contracts []ContractProfile) VendorProfile {
+func PassRSToVProfile(contracts []ContractProfile) VendorProfile {
 	vendor := VendorProfile{}
 	if len(contracts) < 1 {
 		return vendor
@@ -149,4 +149,10 @@ func calcPercentBreakdown(items []string) map[string]float64 {
 		breakdown[key] = val / totalItems
 	}
 	return breakdown
+}
+
+func getCProfileFromRS(id string) ContractProfile {
+	rsContract := getContractFromID(id)
+	contract := PassRSToCProfile(rsContract)
+	return contract
 }

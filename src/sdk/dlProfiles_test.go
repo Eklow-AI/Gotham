@@ -10,7 +10,7 @@ type passToContractTest struct {
 	expected ContractProfile
 }
 
-func TestPassContractToProfile(t *testing.T) {
+func TestPassRSToCProfile(t *testing.T) {
 	// Test pointer values
 	offers := 3
 	zip := "Miami"
@@ -130,7 +130,7 @@ func TestPassContractToProfile(t *testing.T) {
 		},
 	}
 	for num, test := range passToContractTests {
-		if output := PassToCProfile(test.arg1); !reflect.DeepEqual(output, test.expected) {
+		if output := PassRSToCProfile(test.arg1); !reflect.DeepEqual(output, test.expected) {
 			t.Errorf("Output not equal to expected struct for test %d", num)
 		}
 	}
@@ -281,9 +281,9 @@ var passToVProfileTests = []passToVProfileTest{
 	},
 }
 
-func TestPassToVProfile(t *testing.T) {
+func TestPassRSToVProfile(t *testing.T) {
 	for num, test := range passToVProfileTests {
-		output := PassToVProfile(test.arg1)
+		output := PassRSToVProfile(test.arg1)
 		if output.Name != test.expected.Name {
 			t.Errorf("Vendor name does not match expected %d", num)
 		}
